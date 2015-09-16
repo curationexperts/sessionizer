@@ -28,7 +28,7 @@ class SessionsController < ApplicationController
   end
 
   def index
-    @sessions = Event.current_event.sessions
+    @sessions = Event.current_event.sessions.schedulable
     respond_with(@sessions)
   end
 

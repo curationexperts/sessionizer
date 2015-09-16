@@ -11,9 +11,9 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: sessionizer_development
+  database: sessionizer
   pool: 5
-  username: vagrant
+  username: justin
   password:
 
 # Warning: The database defined as "test" will be erased and
@@ -24,7 +24,7 @@ test:
   encoding: unicode
   database: sessionizer_test
   pool: 5
-  username: vagrant
+  username: justin
   password:
 
 production:

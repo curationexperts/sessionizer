@@ -21,6 +21,8 @@ class Session < ActiveRecord::Base
 
   scope :for_current_event, lambda { where(event_id: Event.current_event.id) }
 
+  scope :schedulable, -> { where(room_id: nil) }
+
   validates_presence_of :description
   validates_presence_of :event_id
   validates_presence_of :participant_id
