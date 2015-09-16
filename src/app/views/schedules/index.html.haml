@@ -10,7 +10,7 @@
       Session Schedule
   .timeslots
     - @event.timeslots.each_with_index do |slot, idx|
-      .timeslot{ id: "timeslot_#{slot.id}" }
+      .timeslot{ id: "timeslot_#{slot.id}", data: { day: slot.starts_at.to_date.strftime('%A') } }
         %h2
           .time
             = slot.date_range.to_s(with_day: true)
@@ -53,16 +53,16 @@
     // Jump to timeslot
 
     var updateTimeslotNav = function() {
+      $('.pill').toggleClass('selected', false);
       var scrollTop = $(window).scrollTop() + $('.nav-top').height() + 30
       var foundCurrent = false
       $($('.schedule .timeslot').get().reverse()).each(function(i, slot) {
-        var selected = false;
-        if($(slot).offset().top <= scrollTop) {
+        $slot = $(slot);
+        if($slot.offset().top <= scrollTop) {
           if(!foundCurrent)
-            selected = true
+            $('#' + $slot.data('day') + '_nav').toggleClass('selected', true)
           foundCurrent = true
         }
-        $('#' + slot.id + '_nav').toggleClass('selected', selected)
       })
       return true;
     }
@@ -73,16 +73,15 @@
 
     $('.nav-top .timeslot').click(function(evt) {
       var link = $(evt.target)
-      slotIdSel = link.attr('href')
+      slotDaySel = link.attr('href').replace(/#/, '');
       $('.nav-top .timeslot').toggleClass('selected', false)
-      $(slotIdSel + '_nav').toggleClass('selected', true)
+      $(slotDaySel + '_nav').toggleClass('selected', true)
 
       // Temporarily force clicked time slot to be highlighted,
       // even if it's near the end of the page & doesn't make it
       // past the top edge of the window.
       scrollingToSlot = true
-
-      $.scrollTo($(slotIdSel), {
+      $.scrollTo($('.timeslot[data-day="' + slotDaySel +'"]'), {
         duration: (mobile ? 0 : 500),
         offset: { left: 0, top: -$('.nav-top').height() },
         onAfter: function() {
