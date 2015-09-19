@@ -5,4 +5,8 @@ class PagesController < ApplicationController
 
     @categories = Category.all.order('id')
   end
+
+  def map
+
+  end
 end
